@@ -14,14 +14,14 @@ CREATE TABLE Groups
 	AcademyId INT FOREIGN KEY(AcademyId) REFERENCES Academies(Id)
 )
 
-CREATE tABLE Students
+CREATE TABLE Students
 (
 	Id INT IDENTITY PRIMARY KEY,
 	Name NVARCHAR(20) NOT NULL ,
 	Surname NVARCHAR(20) NOT NULL ,
 	Age TINYINT NOT NULL,
-	Adulthood BIT DEFAULT 0,
-	GroupId INT FOREIGN KEY(GroupId) REFERENCES Groups(Id)
+	GroupId INT FOREIGN KEY(GroupId) REFERENCES Groups(Id),
+	Adulthood BIT DEFAULT 0
 )
 
 CREATE TABLE DeletedStudents
@@ -90,7 +90,7 @@ ON Students
 AFTER INSERT
 AS 
 INSERT INTO Students(Adulthood)
-SELECT Adulthood=1 FROM Students
+SELECT Adulthood = 1 FROM Students
 WHERE Age>=18
 
 CREATE TRIGGER TRGGR_AGE18UP
@@ -101,3 +101,29 @@ INSERT INTO Students(Adulthood)
 SELECT Adulthood=1 FROM Students
 WHERE Age>=18
 
+INSERT INTO Academies
+VALUES
+('AzTU'),
+('BDU')
+
+INSERT INTO Groups
+VALUES
+('AB101',1),
+('AB102',1),
+('BD101',2),
+('BD102',2)
+
+INSERT INTO Students(Name,Surname,Age,GroupId)
+VALUES
+('Maqa','Abdullayev',17,1),
+('Ahmat','Zigmund',22,1),
+('Danil','Bereberli',21,2),
+('Anton','Chekov',17,2),
+('Vitaliy','Anatolivich',18,3),
+('Elcan','Ceferov',16,3),
+('Donald','Tramp',32,4),
+('Jastin','Babazade',27,4)
+
+
+
+SELECT * FROM Students
